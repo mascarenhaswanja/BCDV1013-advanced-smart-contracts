@@ -11,17 +11,13 @@ contract Storage {
  function getData() public view returns (bytes4 output1,uint64 output2,bool output3,address output4) {
     assembly {
         // load storage to stack
-        let data1 := sload(bytes4data_slot)
-        let data2 := sload(uintdata_slot)
-        let data3 := sload(booldata_slot)
-        let data4 := sload(addrdata_slot)
-        data1 := shl(224,and(data1,0xffffffff))
-        data2 := shr(shl(3,uintdata_offset), data2)
-
-        output1 := data1
-        output2 := data2
-        output3 := data3
-        output4 := data4
+        let dataslot1 := sload(bytes4data_slot)
+      
+        output1  := shl(224,and(dataslot1,0xffffffff))
+        output2  := shr(shl(3,uintdata_offset), dataslot1)
+        output3  := shr(shl(1,booldata_offset), dataslot1)
+        
+        output4  := sload(addrdata_slot)
     }
  }
 }
